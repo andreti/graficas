@@ -28,8 +28,29 @@ function concatenar(e){
 	resultado.value = cadena;
 }
 function igual(){
-	r = eval(cadena);
-	grafica();
+c = document.getElementById("canvas");
+	ctx = c.getContext("2d");
+	ctx.fillStyle = "red";
+	x1 =0;
+	x2 =0;
+	y2 =0;
+	y2 =0;
+
+
+	for(i = 0; i<alto;i++){
+		yResultado = eval("20+3*"+0+"");
+		yResultado = yResultado < 0 ? +yResultado:-yResultado ; 
+		yResultado = eval(y+yResultado);
+		ctx.moveTo(x,yResultado);
+		parseFloat(yResultado);
+		ctx.lineTo(x+i,y-i);
+		x1 = x+i;
+		y1 = y-i;
+	}
+
+	
+ctx.stroke();
+	//grafica();
 }
 function grafica(){
 	c = document.getElementById("canvas");
@@ -38,8 +59,8 @@ function grafica(){
 	n = 2;
 	parseFloat(n);
 
-	ctx.moveTo(x+n,y);
-	ctx.lineTo(ancho,alto);
+	ctx.moveTo(x,y);
+	ctx.lineTo(ancho,-alto);
 	ctx.stroke();
 }
 function cargarDoc(){
@@ -57,7 +78,7 @@ function cargarDoc(){
 	document.getElementById("igual").addEventListener("click",igual);
 	resultado = document.getElementById("in");
 	dibujarPlano();
-	grafica();
+	//grafica();
 
 }
 window.addEventListener("load",cargarDoc);
