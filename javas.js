@@ -37,7 +37,32 @@ c = document.getElementById("canvas");
 	y2 =0;
 
 
-	for(i = 0; i<alto;i++){
+	for(i = 0; i<y;i++){
+		p = "-2+"+i;
+		yResultado = eval(p);
+		//console.log(p+" - "+yResultado);
+		yResultado = yResultado < 0 ? eval((-1)*(yResultado)):eval((-1)*(yResultado)) ; 
+		/*if(yResultado< 0)
+			yResultado = eval((-1)*(-yResultado));
+		else
+			yResultado = eval((-1)*(yResultado)) ; */
+
+		yString = yResultado < 0 ? y+""+yResultado:y+"-"+yResultado;
+		yResultado = eval(yString);
+		console.log(yResultado);
+		x1 = x+i;
+		y1 = y-i;
+		//console.log(p+"-"+yResultado+" -x+i: "+x1+" - y-i:"+y1);
+		ctx.moveTo(x+i,yResultado);
+		parseFloat(yResultado);
+		ctx.lineTo(x+i,yResultado);
+		x1 = x+i;
+		y1 = y-i;
+	}
+
+
+
+	/*for(i = 0; i<alto;i++){
 		yResultado = eval("20+3*"+0+"");
 		yResultado = yResultado < 0 ? +yResultado:-yResultado ; 
 		yResultado = eval(y+yResultado);
@@ -46,7 +71,7 @@ c = document.getElementById("canvas");
 		ctx.lineTo(x+i,y-i);
 		x1 = x+i;
 		y1 = y-i;
-	}
+	}*/
 
 	
 ctx.stroke();
