@@ -28,54 +28,63 @@ function concatenar(e){
 	resultado.value = cadena;
 }
 function igual(){
-c = document.getElementById("canvas");
+	c = document.getElementById("canvas");
 	ctx = c.getContext("2d");
 	ctx.fillStyle = "red";
 	x1 =0;
 	x2 =0;
 	y2 =0;
 	y2 =0;
+	xinicial=null;
+	yinicial=null;
 
-
-	for(i = 0; i<y;i++){
-		p = "-2+"+i;
-		yResultado = eval(p);
-		//console.log(p+" - "+yResultado);
-		yResultado = yResultado < 0 ? eval((-1)*(yResultado)):eval((-1)*(yResultado)) ; 
-		/*if(yResultado< 0)
-			yResultado = eval((-1)*(-yResultado));
-		else
-			yResultado = eval((-1)*(yResultado)) ; */
-
-		yString = yResultado < 0 ? y+""+yResultado:y+"-"+yResultado;
-		yResultado = eval(yString);
-		console.log(yResultado);
-		x1 = x+i;
-		y1 = y-i;
-		//console.log(p+"-"+yResultado+" -x+i: "+x1+" - y-i:"+y1);
-		ctx.moveTo(x+i,yResultado);
-		parseFloat(yResultado);
-		ctx.lineTo(x+i,yResultado);
-		x1 = x+i;
-		y1 = y-i;
+	funcion = "2x+2+2";
+	funcion = funcion.split("x");
+	for(i = 0 ;i<funcion.length;i++){
+		funcion2 +=funcion[i]
 	}
+	for(i = 0; i<y;i++){
+		console.log("-------------------------------------------");
+		p = "-2+4-2+"+i+"+1";
+		yResultado = eval(p);
+		console.log("Funcion: "+p+" ; Y="+yResultado);
 
+		yResultado = yResultado < 0 ? eval((-1)*(yResultado)):eval((-1)*(yResultado)) ; 
+		console.log("Preparado para operar: "+yResultado);
 
+		yString = yResultado < 0 ? y+yResultado:y+"+"+yResultado;
+		console.log("Ycoordenada : "+yString);
+		yResultado = eval(yString);
+		console.log("Coordenada Y:"+yResultado);
+		console.log("X= "+parseFloat(x+i)+" ; Y= "+yResultado);
+		x1 = parseFloat(x+i);
+		y1 = yResultado;
+		if(xinicial!=null && yinicial!=null){
+			ctx.moveTo(x1,y1);
+			xinicial = x1;
+			yinicial = y1;
+		}
+		ctx.lineTo(x1,y1);
+		ctx.stroke();
 
-	/*for(i = 0; i<alto;i++){
-		yResultado = eval("20+3*"+0+"");
-		yResultado = yResultado < 0 ? +yResultado:-yResultado ; 
-		yResultado = eval(y+yResultado);
-		ctx.moveTo(x,yResultado);
-		parseFloat(yResultado);
-		ctx.lineTo(x+i,y-i);
-		x1 = x+i;
-		y1 = y-i;
-	}*/
+		p = "-2+4-2+"+"-"+i+"+1";
+		yResultado = eval(p);
+		console.log("Funcion: "+p+" ; Y="+yResultado);
 
+		yResultado = yResultado < 0 ? eval((-1)*(yResultado)):eval((-1)*(yResultado)) ; 
+		console.log("Preparado para operar: "+yResultado);
+
+		yString = yResultado < 0 ? y+yResultado:y+"+"+yResultado;
+		console.log("Ycoordenada : "+yString);
+		yResultado = eval(yString);
+		console.log("Coordenada Y:"+yResultado);
+		console.log("X= "+parseFloat(x+i)+" ; Y= "+yResultado);
+		x1 = parseFloat(x-i);
+		y1 = yResultado;
+		ctx.lineTo(x1,y1);
+		ctx.stroke();
+	}
 	
-ctx.stroke();
-	//grafica();
 }
 function grafica(){
 	c = document.getElementById("canvas");
@@ -107,3 +116,61 @@ function cargarDoc(){
 
 }
 window.addEventListener("load",cargarDoc);
+
+
+
+/*function igual(){
+	c = document.getElementById("canvas");
+	ctx = c.getContext("2d");
+	ctx.fillStyle = "red";
+	x1 =0;
+	x2 =0;
+	y2 =0;
+	y2 =0;
+	xinicial=null;
+	yinicial=null;
+
+
+	for(i = 0; i<y;i++){
+		console.log("-------------------------------------------");
+		p = "-2+4-2*"+i+"+1";
+		yResultado = eval(p);
+		console.log("Funcion: "+p+" ; Y="+yResultado);
+
+		yResultado = yResultado < 0 ? eval((-1)*(yResultado)):eval((-1)*(yResultado)) ; 
+		console.log("Preparado para operar: "+yResultado);
+
+		yString = yResultado < 0 ? y+yResultado:y+"+"+yResultado;
+		console.log("Ycoordenada : "+yString);
+		yResultado = eval(yString);
+		console.log("Coordenada Y:"+yResultado);
+		console.log("X= "+parseFloat(x+i)+" ; Y= "+yResultado);
+		x1 = parseFloat(x+i);
+		y1 = yResultado;
+		if(xinicial!=null && yinicial!=null){
+			ctx.moveTo(x1,y1);
+			xinicial = x1;
+			yinicial = y1;
+		}
+		ctx.lineTo(x1,y1);
+		ctx.stroke();
+
+		p = "-2+4-2*"+"-"+i+"+1";
+		yResultado = eval(p);
+		console.log("Funcion: "+p+" ; Y="+yResultado);
+
+		yResultado = yResultado < 0 ? eval((-1)*(yResultado)):eval((-1)*(yResultado)) ; 
+		console.log("Preparado para operar: "+yResultado);
+
+		yString = yResultado < 0 ? y+yResultado:y+"+"+yResultado;
+		console.log("Ycoordenada : "+yString);
+		yResultado = eval(yString);
+		console.log("Coordenada Y:"+yResultado);
+		console.log("X= "+parseFloat(x+i)+" ; Y= "+yResultado);
+		x1 = parseFloat(x-i);
+		y1 = yResultado;
+		ctx.lineTo(x1,y1);
+		ctx.stroke();
+	}
+	
+}*/
