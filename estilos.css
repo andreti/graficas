@@ -1,4 +1,13 @@
-*{
+/**{
 	margin: 0;
 	padding: 0;
+}*/
+#in{
+	display: block;
+}
+div#grafica{
+	display: inline-block;
+}
+div#reporte{
+	display: inline-block;
 }
