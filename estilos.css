@@ -1,12 +1,55 @@
-/**{
+*{
+	font-family: Helvetica;
 	margin: 0;
 	padding: 0;
-}*/
+}
+h1{
+	text-align: center;
+	margin: 0 auto 0;
+}
+section{
+	margin: 0 auto 0;
+	width: 600px;
+}
 #in{
 	display: block;
 }
-div#grafica{
+button{
+	border: 0;
+	height: 30px;
+	font-size: 15px;
+	margin: 3px;
+	width: 30px;
+
+}
+input{
+	background: white;
+	border:1px solid skyblue ;
+	border-radius: 5px;
+	font-size:30px;
+	height: 30px;
+	margin-bottom: 10px;
+	padding: 5px;
+	width: 300px;
+}
+.numeros{
 	display: inline-block;
+	vertical-align: top;
+}
+.numeros>button{
+	background: skyblue;
+}
+
+.variables{
+	display: inline-block;
+	vertical-align: top;
+
+}
+.variables>button{
+	background: orange;
+}
+.clear{
+	background: #8D8BF2;
 }
 div#reporte{
 	display: inline-block;

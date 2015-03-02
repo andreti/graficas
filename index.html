@@ -7,36 +7,43 @@
 
 </head>
 <body>
-	<section>
+	<section id="section">
+		<h1>Grafica</h1>
 		<div id="resultado">
+			<div>
+				<div id="grafica">
+					<canvas id="canvas"></canvas> 
+				</div>
+			</div>
 			<input type="text" id="in" disabled/>
-			<div id="grafica">
-				<canvas id="canvas">
-				</canvas> 
-			</div>
-			<div id="reporte">
-				
-			</div>
+			<button id="CE" class="clear">CE</button>
+			<button id="DEL" class="clear">⇠</button>
 		</div>
-		<div id="numeros">
-			<button id="1">1</button>
-			<button id="2">2</button>
-			<button id="3">3</button>
-			<button id="4">4</button>
-			<button id="5">5</button>
-			<button id="6">6</button>
-			<button id="7">7</button>
-			<button id="8">8</button>
-			<button id="9">9</button>
-			<button id="0">0</button><br>
-			<button id="+">+</button>
-			<button id="-">-</button>
-			<button id="*">*</button>
-			<button id="/">/</button><br>		
-			<button id="x">x</button>
-			<button id="y">y</button>
-			<button id="x2">x2</button>
-			<button id="igual">=</button>
+		<div >
+			<div class="numeros">
+				<button id="1">1</button>
+				<button id="2">2</button>
+				<button id="3">3</button><br>
+				<button id="4">4</button>
+				<button id="5">5</button>
+				<button id="6">6</button><br>
+				<button id="7">7</button>
+				<button id="8">8</button>
+				<button id="9">9</button><br>
+				<button id="0">0</button>
+			</div>
+			<div class="variables">
+				<button id="+">+</button>
+				<button id="-">-</button>
+				<button id="*">*</button>
+				<button id="/">/</button><br>	
+				<button id="x">x</button>
+				<button id="^">^</button>
+				<button id="igual">=</button>
+			</div>
+			<div id="reporte"></div>
+			
+			
 		</div>
 	</section>
 	<script src="javas.js"></script>
