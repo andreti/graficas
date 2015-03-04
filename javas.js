@@ -1,12 +1,10 @@
 var cadena = "",
 	resultado=null,
-	ancho=parseFloat(800),
-	alto=parseFloat(600),
+	ancho=parseFloat(400),
+	alto=parseFloat(300),
 	x=parseFloat(ancho/2),
 	y=parseFloat(alto/2),
 	ok = false;
-
-
 
 function dibujarPlano(){
 
@@ -14,11 +12,14 @@ function dibujarPlano(){
 	canvas.height = alto;
 	canvas.style.border="1px solid skyblue";
 
+	ctx.fillText("X",0,parseFloat(y));
 	ctx.moveTo(0,parseFloat(y));
 	ctx.lineTo(parseFloat(x*2),parseFloat(y));
 
+	ctx.fillText("Y",parseFloat(x),10);
 	ctx.moveTo(parseFloat(x),0);
 	ctx.lineTo(parseFloat(x),parseFloat(y*2));
+
 	ctx.lineWidth = 1;
 	ctx.strokeStyle = '#C1C1C1';
 	ctx.stroke();   
@@ -27,6 +28,101 @@ function dibujarPlano(){
 function concatenar(e){
 	cadena+=e.target.id;
 	resultado.value = cadena;
+}
+
+function concatenarCuadratica(funcion){
+	return funcion.replace(/^2/g,"*1*x+1*1+x*1");
+}
+function concatenarLineal(funcion){
+	return funcion.replace(/x/g,"*1*x*1");
+}
+function concatenarSen(){
+
+}
+function concatenarTan(){
+
+}
+function concatenarCos(){
+
+}
+function dibujar(funcion){
+	if(funcion.indexOf("x")>-1)
+		funcion = concatenarLineal(funcion);
+	if(funcion.indexOf("^2")>-1)
+		funcion = concatenarCuadratica(funcion);
+	for(i = -100 ; i < 100 ; i++){
+		f = funcion.replace(/x/g,i);
+		res = eval(f);
+		if(i == -100)
+			ctx.moveTo(x-i,y+res);
+		ctx.lineTo(x-i,y+res);
+		ctx.stroke();
+	}
+}
+
+
+
+/*
+
+
+function graficar(funcion){
+
+	n = eval("2^x");
+	n = "x^2";
+	//n = eval("2+x");
+	//n = eval("2^x+2+x");
+
+	for(i = -y ; i < y ; i++){
+
+		p =n;
+		pos=p.indexOf("^");
+		izquierda ="";
+		derecha ="";
+		l=0;
+		for(h = 1 ; h<1000 && pos>-1; h++){		
+			l=h;	
+			v = p.charAt(pos+h);
+			if(v=="")
+				break;
+
+			if(v!=null && v!="x" && izquierda==""){
+				if(!isNaN(v))
+					derecha+=v;
+				else
+					break;
+			}
+			v=p.charAt(pos-h);
+			if(v!=null && v!="x" && derecha==""){
+				if(!isNaN(v))
+					izquierda+=v;
+				else
+					break;
+			}
+		}
+		temp = i;
+		total = 0;
+		if(derecha!=""){
+			for(m = 0;m<parseFloat(derecha);m++){
+				total += temp*temp; 
+			}
+		}
+		else if(izquierda!=""){
+
+		}
+
+
+		if(pos>-1){
+			for(j=0;j<i;j++){
+				p = p.replace(/x/g,"*1*"+i);
+			}
+		}
+		funcion = funcion.replace(/x/g,"*1*"+i);
+		p = p.replace(/x/g,i);
+
+		ctx.moveTo(x1i,y1i);
+		ctx.lineTo(x2f,y2f);
+		ctx.stroke();
+	}
 }
 function funcionCuadratica(){
 	reporte = new Array;
@@ -66,7 +162,7 @@ function funcionCuadratica(){
 	imprimirReporte(funcion,reporte);
 	ok = true;
 }
-function funcionLineal(funcion){
+/*function funcionLineal(funcion){
 	reporte = new Array;
 	j = 0;
 
@@ -103,8 +199,8 @@ function funcionLineal(funcion){
 	ctx.stroke();
 	imprimirReporte(funcion,reporte);
 	ok = true;
+}*/
 
-}
 function imprimirReporte(funcion ,arrayReporte){
 	document.getElementById("reporte").innerHTML+="Ecuación: "+funcion+"<br>";
 	for(i =0 ; i< arrayReporte.length ; i++)
@@ -153,6 +249,8 @@ function cargarDoc(){
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
 	dibujarPlano();
+	dibujar("2^2+3");
+	//graficar();
 
 }
 window.addEventListener("load",cargarDoc);
