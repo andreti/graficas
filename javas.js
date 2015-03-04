@@ -1,7 +1,7 @@
 var cadena = "",
 	resultado=null,
-	ancho=parseFloat(400),
-	alto=parseFloat(300),
+	ancho=parseFloat(800),
+	alto=parseFloat(600),
 	x=parseFloat(ancho/2),
 	y=parseFloat(alto/2),
 	ok = false;
