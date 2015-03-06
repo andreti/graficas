@@ -1,0 +1,54 @@
+[2015-03-06T16:47:04.828-0500] [glassfish 4.1] [INFO] [NCLS-LOGGING-00009] [javax.enterprise.logging] [tid: _ThreadID=17 _ThreadName=RunLevelControllerThread-1425678422960] [timeMillis: 1425678424828] [levelValue: 800] [[
+  Running GlassFish Version: GlassFish Server Open Source Edition  4.1  (build 13)]]
+
+[2015-03-06T16:47:04.831-0500] [glassfish 4.1] [INFO] [NCLS-LOGGING-00010] [javax.enterprise.logging] [tid: _ThreadID=17 _ThreadName=RunLevelControllerThread-1425678422960] [timeMillis: 1425678424831] [levelValue: 800] [[
+  Server log file is using Formatter class: com.sun.enterprise.server.logging.ODLLogFormatter]]
+
+[2015-03-06T16:47:05.064-0500] [glassfish 4.1] [INFO] [] [org.hibernate.validator.internal.util.Version] [tid: _ThreadID=16 _ThreadName=RunLevelControllerThread-1425678422959] [timeMillis: 1425678425064] [levelValue: 800] [[
+  HV000001: Hibernate Validator 5.0.0.Final]]
+
+[2015-03-06T16:47:05.204-0500] [glassfish 4.1] [INFO] [NCLS-SECURITY-01115] [javax.enterprise.system.core.security] [tid: _ThreadID=17 _ThreadName=RunLevelControllerThread-1425678422960] [timeMillis: 1425678425204] [levelValue: 800] [[
+  Realm [admin-realm] of classtype [com.sun.enterprise.security.auth.realm.file.FileRealm] successfully created.]]
+
+[2015-03-06T16:47:05.229-0500] [glassfish 4.1] [INFO] [NCLS-SECURITY-01115] [javax.enterprise.system.core.security] [tid: _ThreadID=17 _ThreadName=RunLevelControllerThread-1425678422960] [timeMillis: 1425678425229] [levelValue: 800] [[
+  Realm [file] of classtype [com.sun.enterprise.security.auth.realm.file.FileRealm] successfully created.]]
+
+[2015-03-06T16:47:05.237-0500] [glassfish 4.1] [INFO] [NCLS-SECURITY-01115] [javax.enterprise.system.core.security] [tid: _ThreadID=17 _ThreadName=RunLevelControllerThread-1425678422960] [timeMillis: 1425678425237] [levelValue: 800] [[
+  Realm [certificate] of classtype [com.sun.enterprise.security.auth.realm.certificate.CertificateRealm] successfully created.]]
+
+[2015-03-06T16:47:05.288-0500] [glassfish 4.1] [INFO] [] [org.glassfish.ha.store.spi.BackingStoreFactoryRegistry] [tid: _ThreadID=18 _ThreadName=RunLevelControllerThread-1425678422969] [timeMillis: 1425678425288] [levelValue: 800] [[
+  Registered org.glassfish.ha.store.adapter.cache.ShoalBackingStoreProxy for persistence-type = replicated in BackingStoreFactoryRegistry]]
+
+[2015-03-06T16:47:05.352-0500] [glassfish 4.1] [INFO] [SEC-SVCS-00100] [javax.enterprise.security.services] [tid: _ThreadID=17 _ThreadName=RunLevelControllerThread-1425678422960] [timeMillis: 1425678425352] [levelValue: 800] [[
+  Authorization Service has successfully initialized.]]
+
+[2015-03-06T16:47:05.479-0500] [glassfish 4.1] [INFO] [NCLS-CORE-00087] [javax.enterprise.system.core] [tid: _ThreadID=19 _ThreadName=RunLevelControllerThread-1425678422970] [timeMillis: 1425678425479] [levelValue: 800] [[
+  Grizzly Framework 2.3.15 started in: 69ms - bound to [/0.0.0.0:8080]]]
+
+[2015-03-06T16:47:05.528-0500] [glassfish 4.1] [INFO] [NCLS-CORE-00087] [javax.enterprise.system.core] [tid: _ThreadID=19 _ThreadName=RunLevelControllerThread-1425678422970] [timeMillis: 1425678425528] [levelValue: 800] [[
+  Grizzly Framework 2.3.15 started in: 2ms - bound to [/0.0.0.0:8181]]]
+
+[2015-03-06T16:47:05.539-0500] [glassfish 4.1] [INFO] [NCLS-CORE-00087] [javax.enterprise.system.core] [tid: _ThreadID=19 _ThreadName=RunLevelControllerThread-1425678422970] [timeMillis: 1425678425539] [levelValue: 800] [[
+  Grizzly Framework 2.3.15 started in: 2ms - bound to [/0.0.0.0:4848]]]
+
+[2015-03-06T16:47:05.589-0500] [glassfish 4.1] [INFO] [NCLS-CORE-00087] [javax.enterprise.system.core] [tid: _ThreadID=18 _ThreadName=RunLevelControllerThread-1425678422969] [timeMillis: 1425678425589] [levelValue: 800] [[
+  Grizzly Framework 2.3.15 started in: 1ms - bound to [/0.0.0.0:3700]]]
+
+[2015-03-06T16:47:05.775-0500] [glassfish 4.1] [INFO] [NCLS-CORE-00017] [javax.enterprise.system.core] [tid: _ThreadID=1 _ThreadName=main] [timeMillis: 1425678425775] [levelValue: 800] [[
+  GlassFish Server Open Source Edition  4.1  (13) startup time : Felix (22.939ms), startup services(2.822ms), total(25.761ms)]]
+
+[2015-03-06T16:47:06.318-0500] [glassfish 4.1] [INFO] [NCLS-JMX-00005] [javax.enterprise.system.jmx] [tid: _ThreadID=61 _ThreadName=Thread-14] [timeMillis: 1425678426318] [levelValue: 800] [[
+  JMXStartupService has started JMXConnector on JMXService URL service:jmx:rmi://10.0.0.112:8686/jndi/rmi://10.0.0.112:8686/jmxrmi]]
+
+[2015-03-06T16:47:06.414-0500] [glassfish 4.1] [INFO] [NCLS-CORE-00087] [javax.enterprise.system.core] [tid: _ThreadID=16 _ThreadName=RunLevelControllerThread-1425678422959] [timeMillis: 1425678426414] [levelValue: 800] [[
+  Grizzly Framework 2.3.15 started in: 1ms - bound to [/0.0.0.0:7676]]]
+
+[2015-03-06T16:47:06.866-0500] [glassfish 4.1] [INFO] [NCLS-BOOTSTRAP-00027] [javax.enterprise.bootstrap] [tid: _ThreadID=1 _ThreadName=main] [timeMillis: 1425678426866] [levelValue: 800] [[
+  Registered com.sun.enterprise.glassfish.bootstrap.osgi.EmbeddedOSGiGlassFishImpl@3693428c as OSGi service registration: org.apache.felix.framework.ServiceRegistrationImpl@3e5e0aad.]]
+
+[2015-03-06T16:47:08.972-0500] [glassfish 4.1] [INFO] [NCLS-CORE-00087] [javax.enterprise.system.core] [tid: _ThreadID=31 _ThreadName=pool-8-thread-1] [timeMillis: 1425678428972] [levelValue: 800] [[
+  Grizzly Framework 2.3.15 started in: 1ms - bound to [/0.0.0.0:8080]]]
+
+[2015-03-06T16:47:09.088-0500] [glassfish 4.1] [INFO] [NCLS-CORE-00087] [javax.enterprise.system.core] [tid: _ThreadID=31 _ThreadName=pool-8-thread-1] [timeMillis: 1425678429088] [levelValue: 800] [[
+  Grizzly Framework 2.3.15 started in: 2ms - bound to [/0.0.0.0:8181]]]
+
