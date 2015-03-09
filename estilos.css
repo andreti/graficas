@@ -1,5 +1,7 @@
 *{
 	font-family: Helvetica;
+	background: black;
+	color:white;
 	margin: 0;
 	padding: 0;
 }
@@ -9,22 +11,23 @@ h1{
 }
 section{
 	margin: 0 auto 0;
+	padding: 10px;
 	width: 600px;
 }
-#in{
-	display: block;
-}
 button{
-	border: 0;
+	/*border:1px solid white;*/
+	border:0;
 	height: 30px;
 	font-size: 15px;
 	margin: 3px;
 	width: 30px;
-
+}
+button:hover{
+	color:blue;
 }
 input{
-	background: white;
-	border:1px solid skyblue ;
+	background: black;
+	border:1px solid black ;
 	border-radius: 5px;
 	font-size:30px;
 	height: 30px;
@@ -32,25 +35,48 @@ input{
 	padding: 5px;
 	width: 300px;
 }
-.numeros{
+.clear{
+	background: #8D8BF2 !important;
+}
+#reporte{
+	display: none;
+	border:1px solid grey;
+	border-style: dotted;
+	color: grey;
+	font-size: 12px;
+	left: 10px;
+	padding: 5px;
+	position: fixed;
+	top: 40px;
+	text-align: center;
+}
+#resultado{
+	padding: 2px;
+	width: 90%;
+}
+#grafica, #funcion, #resultado, #botones, .numeros, .variables, #reporte{
+	margin:0 auto 0;
+}
+
+#funcion{
+	width: 100%;
+}
+#funcion input#in{
+	display: block;
+	margin:0 auto 0;
+	width:95%;
+}
+#botones{
+	width: 90%;
+	text-align: center;
+}
+.numeros, .variables{
 	display: inline-block;
 	vertical-align: top;
 }
 .numeros>button{
 	background: skyblue;
 }
-
-.variables{
-	display: inline-block;
-	vertical-align: top;
-
-}
 .variables>button{
 	background: orange;
-}
-.clear{
-	background: #8D8BF2;
-}
-div#reporte{
-	display: inline-block;
 }
