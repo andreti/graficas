@@ -61,7 +61,10 @@ input{
 #funcion{
 	width: 100%;
 }
-#funcion input#in{
+#res{
+	font-size: 25|px;
+}
+#funcion input#in, input#res{
 	display: block;
 	margin:0 auto 0;
 	width:95%;

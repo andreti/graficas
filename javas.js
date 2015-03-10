@@ -1,5 +1,5 @@
 var cadena = "",
-	resultado=null,
+	entrada=null,
 	reporteO=null,
 	ancho=parseFloat(400),
 	alto=parseFloat(ancho),
@@ -11,7 +11,8 @@ var cadena = "",
 	parentesisCerrado = true,
 	scala = 1,
 	translatePos = null,
-	scaleMultiplier = 0.8;
+	scaleMultiplier = 0.8,
+	res = null;
 
 function dibujarPlano(){
 	ctx.beginPath();
@@ -68,34 +69,43 @@ function concatenar(e){
 						valor = valor.replace(valor, "x"+valor);
 						parentesisCerrado = true;
 					}
-					else if(valor=="x")
-						add=true;
 				}
 				else if(ultimo=="x"){
 					if(funcionTrigo)
 						valor = valor.replace(valor, "*"+valor);
 					if(valor =="X²")
 			   			valor = valor.replace(valor, "*"+valor);
-					add = true;
+			   		if(ultimo=="²")
+						valor = valor.replace(valor, "*"+valor);
 				}
-				else if(valor=="x")
-					add = true;
-				/*else if(ultimo!=")" || ultimo!="(" )
-					add = false;*/
+				else if(ultimo=="*" || ultimo =="/"){
+					if(valor=="+" || valor =="-")
+						add = true;
+				}
+				else if(ultimo=="+" || ultimo =="-"){
+					if(valor =="X²")
+						add = true;
+				}
+				else if(ultimo=="")
+					if(valor=="x" || valor =="X²")
+						add = true;
+
+				else if(ultimo!=")" || ultimo!="(" )
+					add = false;
 			}
 		}
 		else if(!isNaN(ultimo)){
 			add = true;
 			if(funcionTrigo || valor =="x")
 				valor = valor.replace(valor, "*"+valor);	
-			else if(valor=="(")
+			else if(valor=="(" || (valor==")" && parentesisCerrado))
 				add=false;
 			else if(valor == "X²")
 				valor = valor.replace(valor, "*"+valor);
 			
 		}
 		else if(isNaN(ultimo)){
-			if(ultimo==")")
+			if(ultimo==")" || ultimo=="x")
 				valor = valor.replace(valor, "*"+valor);
 			add=true;
 		}
@@ -109,7 +119,7 @@ function concatenar(e){
 	}
 	if(add){
 		cadena+=valor;
-		resultado.value = cadena;
+		entrada.value = cadena;
 	}	
 }
 
@@ -140,6 +150,27 @@ function funcionesSenCosTan(funcion){
 	}
 	return funcion;
 }
+function funcionRaiz(funcion){
+	salir = false;
+	while(!salir){
+		raiz = funcion.indexOf("√");
+		if(raiz>-1){
+			raiz++;
+			v = "";
+			caracter = funcion.charAt(raiz)
+			while((!isNaN(caracter) || caracter=="x") && caracter!="" ){
+				v+=funcion.charAt(raiz);
+				raiz++;
+				caracter = funcion.charAt(raiz)
+			}
+			res = Math.sqrt(v);
+			funcion = funcion.replace("√"+v,"1*"+res);
+		}
+		else
+			salir=true;
+	}
+	return funcion;
+}
 
 function dibujar(funcion){
 	limpiarCanvas();
@@ -157,11 +188,14 @@ function dibujar(funcion){
 	j = 0;
 	reporte = new Array();
 	funcionOriginal = funcion;
+	funcionTrigo= funcion.indexOf("sen")>-1 || funcion.indexOf("cos")>-1 || funcion.indexOf("tan")>-1 ? true: false;
+	tieneRaiz = funcion.indexOf("√")>-1?true:false;
 	for(i = -valorT ; i < valorT ; i+=pixel){
 		funcion = funcionOriginal;	
 		funcion = funcion.replace(/x/g,i);
-		//Para saber si la funcion contiene funciones trigonometricas
-		funcionTrigo= funcion.indexOf("sen")>-1 || funcion.indexOf("cos")>-1 || funcion.indexOf("tan")>-1 ? true: false;
+		//ACOMODAR LA FUNCION PARA QUE PUEDA SER EVALUADA
+		if(tieneRaiz)
+			funcion = funcionRaiz(funcion);
 		if(funcionTrigo)
 			funcion = funcionesSenCosTan(funcion);
 		
@@ -172,7 +206,7 @@ function dibujar(funcion){
 		if(i == -valorT)
 			ctx.moveTo(ejeX,res);
 		ctx.lineTo(ejeX,res);
-		//Imprime el reporte X, Y
+		//IMPRIME EL REPORTE X, Y
 		if(i>-10 && i<10) {
 			res2=parseFloat(y-res)+"";
 			reporte[j] =parseFloat(i)+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+res2.substring(0,4);
@@ -197,10 +231,11 @@ function imprimirReporte(funcion ,arrayReporte){
 	reporteO.style.display="inherit"
 }
 function limpiarTodo(){
-	document.getElementById("reporte").innerHTML="";
+	reporteO.innerHTML="";
+	reporteO.style.display="none";
+	entrada.value="";
 	resultado.value="";
 	cadena ="";
-    reporteO.style.display="none";
     limpiarCanvas();
 	ok = false;
 }
@@ -213,17 +248,24 @@ function igual(){
 		limpiarTodo();
 	
 	if(sePuedeGraficar()){
-		dibujar(cadena);
-		ok=true;
+		dibujar(cadena);	
 	}
-	/*else{
-		//calculadoraSimple();
-	}*/
+	else{
+		if(cadena.indexOf("√")>-1)
+			calculadoraSimple(funcionRaiz(cadena));
+		else
+			calculadoraSimple(cadena);
+	}
+	ok=true;
+}
+function calculadoraSimple(funcion){
+	resul = eval(funcion);
+	resultado.value = resul;
 }
 function sePuedeGraficar(){
 	graficarBoolean = false;
 	if(cadena!="")
-		graficarBoolean = cadena.indexOf("x")>-1 || cadena.indexOf("sen")>-1 || cadena.indexOf("cos") || cadena.indexOf("tan")>-1 ? true: false;1
+		graficarBoolean = cadena.indexOf("x")>-1 || cadena.indexOf("X²")>-1 ||  cadena.indexOf("sen")>-1 || cadena.indexOf("cos")>-1 || cadena.indexOf("tan")>-1 ? true: false;1
 	return graficarBoolean;
 
 }
@@ -242,51 +284,23 @@ function zoom(e){
 
 }
 function draw(scale, translatePos){
-            //var canvas = document.getElementById("myCanvas");
-            //tx = canvas.getContext("2d");
-            //limpiarCanvas();
-            
-            //context.clearRect(0, 0, canvas.width, canvas.height);
-            //limpiarCanvas();
-            //ctx.save();
-            if(sePuedeGraficar()){
-            	canvas = document.getElementById("canvas");
-            	canvas.width = ancho;
-            	canvas.height = alto;
-				//canvas.style.border="1px solid gray";
-				canvas.style.background="white";
-				ctx = canvas.getContext("2d");
-				ctx.save();
-				ctx.translate(0, 0);
-				ctx.scale(scale, scale);
-                //dibujarPlano();
 
-                dibujar(cadena);
-            }
+	if(sePuedeGraficar()){
+		canvas = document.getElementById("canvas");
+		canvas.width = ancho;
+		canvas.height = alto;
+		//canvas.style.border="1px solid gray";
+		canvas.style.background="white";
+		ctx = canvas.getContext("2d");
+		ctx.save();
+		ctx.translate(0, 0);
+		ctx.scale(scale, scale);
+              //dibujarPlano();
 
-        //ctx.stroke();
-            //ctx.restore();
+              dibujar(cadena);
+    }
+}
 
-            /*context.beginPath(); // begin custom shape
-            context.moveTo(-119, -20);
-            context.bezierCurveTo(-159, 0, -159, 50, -59, 50);
-            context.bezierCurveTo(-39, 80, 31, 80, 51, 50);
-            context.bezierCurveTo(131, 50, 131, 20, 101, 0);
-            context.bezierCurveTo(141, -60, 81, -70, 51, -50);
-            context.bezierCurveTo(31, -95, -39, -80, -39, -50);
-            context.bezierCurveTo(-89, -95, -139, -80, -119, -20);
-            context.closePath(); // complete custom shape
-            var grd = context.createLinearGradient(-59, -100, 81, 100);
-            grd.addColorStop(0, "#8ED6FF"); // light blue
-            grd.addColorStop(1, "#004CB3"); // dark blue
-            context.fillStyle = grd;
-            context.fill();
-
-            context.lineWidth = 5;
-            context.strokeStyle = "#0000ff";
-            context.stroke();
-            context.restore();*/
-            }
 function funcionesMouse(){
 
                 var startDragOffset = {};
@@ -294,8 +308,6 @@ function funcionesMouse(){
 
                 canvas.addEventListener('mousewheel',zoom);
 
-
-                // add event listeners to handle screen drag
                 canvas.addEventListener("mousedown", function(evt){
                     mouseDown = true;
                     startDragOffset.x = evt.clientX - translatePos.x;
@@ -335,7 +347,8 @@ function cargarDoc(){
 	document.getElementById("CE").addEventListener("click",limpiarTodo);
 	anchoSection = ancho+50;
 	document.getElementById("section").style.width=anchoSection+"px";
-	resultado = document.getElementById("in");
+	entrada = document.getElementById("in");
+	resultado = document.getElementById("res");
 	sectionO = document.getElementById("section");
 	reporteO = document.getElementById("reporte");
 	reporteO.style.left=sectionO.offsetLeft-200+"px";
