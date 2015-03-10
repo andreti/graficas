@@ -49,7 +49,7 @@ function concatenar(e){
 		limpiarTodo();
 	valor = e.target.id;
 	add = false;
-	funcionTrigo= valor=="sen(" || valor=="cos(" || valor =="tan(" ? true: false;
+	funcionTrigo= valor=="sen(" || valor=="cos(" || valor =="tan(" || valor=="√(" ? true: false;
 	if(cadena!=""){
 		ultimo = cadena.charAt(cadena.length-1);
 		if(isNaN(valor) && isNaN(ultimo)){
@@ -78,20 +78,24 @@ function concatenar(e){
 			   		if(ultimo=="²")
 						valor = valor.replace(valor, "*"+valor);
 				}
-				else if(ultimo=="*" || ultimo =="/"){
+				/*else if(ultimo=="*" || ultimo =="/"){
 					if(valor=="+" || valor =="-")
-						add = true;
-				}
+					*	add = true;
+				}*/
 				else if(ultimo=="+" || ultimo =="-"){
 					if(valor =="X²")
 						add = true;
 				}
-				else if(ultimo=="")
-					if(valor=="x" || valor =="X²")
+				else if(ultimo == "²"){
+					if(valor ==")")
 						add = true;
-
+				}
 				else if(ultimo!=")" || ultimo!="(" )
 					add = false;
+			}
+			else if(valor=="*" || valor=="/"){
+				if(ultimo=="x")
+					add = true;
 			}
 		}
 		else if(!isNaN(ultimo)){
@@ -156,15 +160,26 @@ function funcionRaiz(funcion){
 		raiz = funcion.indexOf("√");
 		if(raiz>-1){
 			raiz++;
-			v = "";
+			v = "";v2="";
 			caracter = funcion.charAt(raiz)
-			while((!isNaN(caracter) || caracter=="x") && caracter!="" ){
-				v+=funcion.charAt(raiz);
+			numPare=1;
+			while(caracter!=""){
+				if(caracter!=")" && caracter!="(")
+					v+=caracter
 				raiz++;
 				caracter = funcion.charAt(raiz)
+								
+				numPare = caracter == "(" ?  numPare+1 : numPare;
+				numPare = caracter == ")" ?  numPare-1 : numPare;
+				caracter = numPare == 0 ? "" : caracter;
+
+				if(numPare!=0)
+					v2+=caracter;
 			}
-			res = Math.sqrt(v);
-			funcion = funcion.replace("√"+v,"1*"+res);
+			res = eval(v);
+			res= res < 0 ? eval(-1*res):res;
+			res = Math.sqrt(res);
+			funcion = funcion.replace("√("+v2+")","1*"+res);
 		}
 		else
 			salir=true;
@@ -174,9 +189,6 @@ function funcionRaiz(funcion){
 
 function dibujar(funcion){
 	limpiarCanvas();
-	//dibujarPlano();
-	//por = funcion.indexOf("x")==0?"":"*";
-	//por = funcion.indexOf("*x")>-1?"":por;
 	if(funcion.indexOf("x")>-1)
 		funcion = funcion.replace(/x/g,"1*x");
 	if(funcion.indexOf("X²")>-1)
@@ -194,10 +206,8 @@ function dibujar(funcion){
 		funcion = funcionOriginal;	
 		funcion = funcion.replace(/x/g,i);
 		//ACOMODAR LA FUNCION PARA QUE PUEDA SER EVALUADA
-		if(tieneRaiz)
-			funcion = funcionRaiz(funcion);
-		if(funcionTrigo)
-			funcion = funcionesSenCosTan(funcion);
+		funcion = tieneRaiz ? funcionRaiz(funcion):funcion;
+		funcion = funcionTrigo ? funcionesSenCosTan(funcion):funcion;
 		
 		funcion = funcion.replace(/x/g,i);
 		res = eval(funcion);
@@ -246,17 +256,18 @@ function limpiarCanvas(){
 function igual(){
 	if(ok)
 		limpiarTodo();
-	
-	if(sePuedeGraficar()){
-		dibujar(cadena);	
+	if(cadena!=""){
+		if(sePuedeGraficar()){
+			dibujar(cadena);	
+		}
+		else{
+			if(cadena.indexOf("√")>-1)
+				calculadoraSimple(funcionRaiz(cadena));
+			else
+				calculadoraSimple(cadena);
+		}
+		ok=true;
 	}
-	else{
-		if(cadena.indexOf("√")>-1)
-			calculadoraSimple(funcionRaiz(cadena));
-		else
-			calculadoraSimple(cadena);
-	}
-	ok=true;
 }
 function calculadoraSimple(funcion){
 	resul = eval(funcion);
@@ -267,9 +278,18 @@ function sePuedeGraficar(){
 	if(cadena!="")
 		graficarBoolean = cadena.indexOf("x")>-1 || cadena.indexOf("X²")>-1 ||  cadena.indexOf("sen")>-1 || cadena.indexOf("cos")>-1 || cadena.indexOf("tan")>-1 ? true: false;1
 	return graficarBoolean;
-
 }
-
+function del(){
+	if(ok)
+		limpiarTodo();
+	if(cadena!=""){
+		cadena = cadena.substring(0,cadena.length-1);
+		entrada.value = cadena;
+	}
+}
+function cambiarSigno() {
+	
+}
 function zoom(e){
 	console.log(e);
 	console.log("layerX: "+e.layerX + " layerY"+e.layerY);
@@ -284,7 +304,6 @@ function zoom(e){
 
 }
 function draw(scale, translatePos){
-
 	if(sePuedeGraficar()){
 		canvas = document.getElementById("canvas");
 		canvas.width = ancho;
@@ -295,56 +314,57 @@ function draw(scale, translatePos){
 		ctx.save();
 		ctx.translate(0, 0);
 		ctx.scale(scale, scale);
-              //dibujarPlano();
-
-              dibujar(cadena);
-    }
-}
+	    //dibujarPlano();
+        dibujar(cadena);
+      }
+ }
 
 function funcionesMouse(){
 
-                var startDragOffset = {};
-                var mouseDown = false;
+    var startDragOffset = {};
+    var mouseDown = false;
 
-                canvas.addEventListener('mousewheel',zoom);
+    canvas.addEventListener('mousewheel',zoom);
 
-                canvas.addEventListener("mousedown", function(evt){
-                    mouseDown = true;
-                    startDragOffset.x = evt.clientX - translatePos.x;
-                    startDragOffset.y = evt.clientY - translatePos.y;
-                });
+    canvas.addEventListener("mousedown", function(evt){
+        mouseDown = true;
+        startDragOffset.x = evt.clientX - translatePos.x;
+        startDragOffset.y = evt.clientY - translatePos.y;
+    });
 
-                canvas.addEventListener("mouseup", function(evt){
-                    mouseDown = false;
-                });
+    canvas.addEventListener("mouseup", function(evt){
+        mouseDown = false;
+    });
 
-                canvas.addEventListener("mouseover", function(evt){
-                    mouseDown = false;
-                });
+    canvas.addEventListener("mouseover", function(evt){
+        mouseDown = false;
+    });
 
-                canvas.addEventListener("mouseout", function(evt){
-                    mouseDown = false;
-                });
+    canvas.addEventListener("mouseout", function(evt){
+        mouseDown = false;
+    });
 
-                canvas.addEventListener("mousemove", function(evt){
-                    if (mouseDown) {
-                        translatePos.x = evt.clientX - startDragOffset.x;
-                        translatePos.y = evt.clientY - startDragOffset.y;
-                        draw(scala, translatePos);
-                    }
-                });
+    canvas.addEventListener("mousemove", function(evt){
+        if (mouseDown) {
+            translatePos.x = evt.clientX - startDragOffset.x;
+            translatePos.y = evt.clientY - startDragOffset.y;
+            draw(scala, translatePos);
+        }
+    });
 
-                //draw(scala, translatePos);
+    //draw(scala, translatePos);
 }
 function cargarDoc(){
 	botones = document.getElementsByTagName("button");
 	for(i = 0 ; i < botones.length ; i++){
-		if(botones[i].id!="igual" && botones[i].id!="CE" )
+		if(botones[i].id!="igual" && botones[i].id!="CE" && botones[i].id!="DEL" && botones[i].id!="±")
 			botones[i].addEventListener("click",concatenar);
 	}
 
 	document.getElementById("igual").addEventListener("click",igual);
 	document.getElementById("CE").addEventListener("click",limpiarTodo);
+	document.getElementById("DEL").addEventListener("click",del);
+	document.getElementById("±").addEventListener("click",cambiarSigno);
 	anchoSection = ancho+50;
 	document.getElementById("section").style.width=anchoSection+"px";
 	entrada = document.getElementById("in");
@@ -388,9 +408,9 @@ window.addEventListener("load",cargarDoc);
 
 
 window.onerror = function (msg, url, line, col, error) {
-   var extra = !col ? '' : '\ncolumn: ' + col;
-   extra += !error ? '' : '\nerror: ' + error;
-   alert("Error: " + msg + "\nurl: " + url + "\nline: " + line + extra);
+   var extra = !col ? '' : '\nColumna: ' + col;
+   extra += !error ? '' : '\nError: ' + error;
+   alert("Error: " + msg + "\nUrl: " + url + "\nlinea: " + line + extra);
    var suppressErrorAlert = true;
    return suppressErrorAlert;
 }

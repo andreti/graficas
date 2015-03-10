@@ -25,15 +25,10 @@ button{
 button:hover{
 	color:blue;
 }
-input{
-	background: black;
-	border:1px solid black ;
-	border-radius: 5px;
-	font-size:30px;
-	height: 30px;
-	margin-bottom: 10px;
+#calculadora{
+	/*border:1px solid black;*/
 	padding: 5px;
-	width: 300px;
+	width: 80%;
 }
 .clear{
 	background: #8D8BF2 !important;
@@ -54,20 +49,31 @@ input{
 	padding: 2px;
 	width: 90%;
 }
-#grafica, #funcion, #resultado, #botones, .numeros, .variables, #reporte{
+#grafica, #funcion, #resultado, #botones, .numeros, .variables, #reporte, #calculadora{
 	margin:0 auto 0;
 }
 
 #funcion{
-	width: 100%;
+	border:1px solid skyblue;
+	border-radius: 5px;
+	margin-bottom: 3px;
+	width: 90%;
+}
+#in, #res{
+	background: black;
+	border:1px solid black ;
+	border:0;
+	border-radius: 5px;
+	display: block;
+	font-size:30px;
+	height: 30px;
+	margin:0 auto 0;
+	margin-bottom: 0;
+	padding: 5px;
+	width:95%;
 }
 #res{
-	font-size: 25|px;
-}
-#funcion input#in, input#res{
-	display: block;
-	margin:0 auto 0;
-	width:95%;
+	font-size: 25px;
 }
 #botones{
 	width: 90%;
