@@ -1,3 +1,4 @@
+//VARIABLES
 var cadena = "",
 	entrada=null,
 	reporteO=null,
@@ -10,19 +11,14 @@ var cadena = "",
 	ok = false,
 	parentesisCerrado = true,
 	scala = 1,
-	translatePos = null,
-	scaleMultiplier = 0.8,
-	res = null;
+	translatePos = null;
 
+//FUNCION QUE DIBUJA EL PLANO
 function dibujarPlano(){
 	ctx.beginPath();
 	ctx.font = "bold 15pt Verdana";
 	ctx.lineWidth = 1;
-	//ctx.fillStyle="green";
 	ctx.strokeStyle = 'blue';
-	//ctx.fillText("X",0,parseFloat(y));
-	//ctx.fillText("Y",parseFloat(x),10);
-	//ctx.textAlign="center";
 	
 	ctx.strokeText("-X",0,y+5);   
 	ctx.strokeText("X",ancho-15,y+5);   
@@ -44,6 +40,7 @@ function dibujarPlano(){
 	ctx.closePath();
 
 }
+//FUNCION ENCARGADA DE CONCATENAR Y REACOMODAR LOS VALORES ENTRANTES
 function concatenar(e){
 	if(ok)
 		limpiarTodo();
@@ -126,7 +123,20 @@ function concatenar(e){
 		entrada.value = cadena;
 	}	
 }
-
+//IDENTIFICA SI LOS PARENTESIS ESTAN COMPLETOS
+function revizarParentesis(funcion){
+	n =0;
+	for(i = 0 ; i<funcion.length ;i++){
+		caracter=funcion.charAt(i);
+		n = caracter=="(" ? n+1 :n;
+		n = caracter==")" ? n-1 :n;
+	}
+	if(n == 0)
+		return true;
+	else
+		return false;
+}
+//RESUELVE LA PARTE DEL SEN, COS, TAN
 function funcionesSenCosTan(funcion){
 	salir = false;
 	while(!salir){
@@ -136,14 +146,25 @@ function funcionesSenCosTan(funcion){
 		posIdentidad = funcion.indexOf(identidadT);
 		if(posIdentidad>-1){
 			posIdentidad+=4;
-			v = "";
-			while(funcion.charAt(posIdentidad)!=")"){
-				v+=funcion.charAt(posIdentidad);
+			caracter = funcion.charAt(posIdentidad)
+			v = "", v2=caracter;
+			numPare=1;
+			while(caracter!=""){
+				if(caracter!=")" && caracter!="(")
+					v+=caracter
 				posIdentidad++;
+				caracter = funcion.charAt(posIdentidad)
+								
+				numPare = caracter == "(" ?  numPare+1 : numPare;
+				numPare = caracter == ")" ?  numPare-1 : numPare;
+				caracter = numPare == 0 ? "" : caracter;
+
+				if(numPare!=0)
+					v2+=caracter;
 			}
 			res = eval(v);
 			if(identidadT=="sen")
-				funcion = funcion.replace(identidadT+'('+v+')',"1*"+Math.sin(res));
+				funcion = funcion.replace(identidadT+'('+v2+')',"1*"+Math.sin(res));
 			else if(identidadT=="cos")
 				funcion = funcion.replace(identidadT+'('+v+')',"1*"+Math.cos(res));
 			else if(identidadT=="tan")
@@ -154,6 +175,7 @@ function funcionesSenCosTan(funcion){
 	}
 	return funcion;
 }
+//RESUELVE LA PARTE DE LA RAIZ
 function funcionRaiz(funcion){
 	salir = false;
 	while(!salir){
@@ -186,9 +208,10 @@ function funcionRaiz(funcion){
 	}
 	return funcion;
 }
-
+//FUNCION ENCARGADA DE ADAPTAR LA FUNCION PASADA POR PARAMETRO PARA PODERLA GRAFICAR
 function dibujar(funcion){
 	limpiarCanvas();
+	//REMPLAZAR VALORES
 	if(funcion.indexOf("x")>-1)
 		funcion = funcion.replace(/x/g,"1*x");
 	if(funcion.indexOf("X²")>-1)
@@ -200,13 +223,16 @@ function dibujar(funcion){
 	j = 0;
 	reporte = new Array();
 	funcionOriginal = funcion;
+	//DETERMINAR SI LA FUNCION CONTIENE SEN, COS, TAN
 	funcionTrigo= funcion.indexOf("sen")>-1 || funcion.indexOf("cos")>-1 || funcion.indexOf("tan")>-1 ? true: false;
+	//DETERMINAR SI LA FUNCION TIENE RAIZ
 	tieneRaiz = funcion.indexOf("√")>-1?true:false;
 	for(i = -valorT ; i < valorT ; i+=pixel){
 		funcion = funcionOriginal;	
 		funcion = funcion.replace(/x/g,i);
-		//ACOMODAR LA FUNCION PARA QUE PUEDA SER EVALUADA
+		//ACOMODAR LA FUNCION SI TIENE RAIZ
 		funcion = tieneRaiz ? funcionRaiz(funcion):funcion;
+		//ACOMODA LA FUNCION SI TIENE SEN , COS ,TAN
 		funcion = funcionTrigo ? funcionesSenCosTan(funcion):funcion;
 		
 		funcion = funcion.replace(/x/g,i);
@@ -216,8 +242,8 @@ function dibujar(funcion){
 		if(i == -valorT)
 			ctx.moveTo(ejeX,res);
 		ctx.lineTo(ejeX,res);
-		//IMPRIME EL REPORTE X, Y
-		if(i>-10 && i<10) {
+		//IMPRIME EL REPORTE X, Y SOLAMENTE IMPRIME DE -10 A +10
+		if(i>-11 && i<11) {
 			res2=parseFloat(y-res)+"";
 			reporte[j] =parseFloat(i)+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+res2.substring(0,4);
 			j++;
@@ -227,12 +253,13 @@ function dibujar(funcion){
 	ctx.closePath();
 	imprimirReporte(cadena, reporte);	
 }
-
+//FUNCION QUE ASIGNA PARAMETROS DE ESTILO DE DIBUJO PARA LA GRAFICA
 function graficar(){
 	ctx.lineWidth = 2;
 	ctx.strokeStyle = '#000';
 	ctx.stroke();
 }
+//IMPRIME UN REPORTE DE VARIABLES X , Y y LA FUNCION SOLO CUANDO SE GRAFICA
 function imprimirReporte(funcion ,arrayReporte){
 	reporteO.innerHTML="";
 	reporteO.innerHTML+="Ecuación: "+funcion+"<br>X&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Y<br><br>";
@@ -240,6 +267,7 @@ function imprimirReporte(funcion ,arrayReporte){
 		reporteO.innerHTML+=arrayReporte[i]+"<br>";
 	reporteO.style.display="inherit"
 }
+//LIMPIA TODO 
 function limpiarTodo(){
 	reporteO.innerHTML="";
 	reporteO.style.display="none";
@@ -249,36 +277,43 @@ function limpiarTodo(){
     limpiarCanvas();
 	ok = false;
 }
+//LIMPIA EL CONTENIDO DEL CANVAS Y VUELVE A DIBUJAR EL PLANO
 function limpiarCanvas(){
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	dibujarPlano();
 }
+//FUNCION DEL BOTON IGUAL
 function igual(){
 	if(ok)
 		limpiarTodo();
-	if(cadena!=""){
+	if(cadena!="" && revizarParentesis(cadena)){
 		if(sePuedeGraficar()){
 			dibujar(cadena);	
 		}
 		else{
 			if(cadena.indexOf("√")>-1)
 				calculadoraSimple(funcionRaiz(cadena));
+			else if(cadena.indexOf("sen")>-1 || cadena.indexOf("cos")>-1 || cadena.indexOf("tan")>-1 )
+				calculadoraSimple(funcionesSenCosTan(cadena))
 			else
 				calculadoraSimple(cadena);
 		}
 		ok=true;
 	}
 }
+//FUNCION PARA REALIZAR LAS OPERACIONES BASICAS
 function calculadoraSimple(funcion){
 	resul = eval(funcion);
 	resultado.value = resul;
 }
+//FUNCION QUE DETERMINA SI SE PUEDE O NO GRAFICAR LA FUNCION QUE BIENE POR PARAMETRO
 function sePuedeGraficar(){
 	graficarBoolean = false;
 	if(cadena!="")
-		graficarBoolean = cadena.indexOf("x")>-1 || cadena.indexOf("X²")>-1 ||  cadena.indexOf("sen")>-1 || cadena.indexOf("cos")>-1 || cadena.indexOf("tan")>-1 ? true: false;1
+		graficarBoolean = cadena.indexOf("x")>-1 || cadena.indexOf("X²")>-1 ? true: false;1
 	return graficarBoolean;
 }
+//FUNCION PARA ELIMINAR EL ULTIMO CARACTER DE LA CADENA
 function del(){
 	if(ok)
 		limpiarTodo();
@@ -290,9 +325,9 @@ function del(){
 function cambiarSigno() {
 	
 }
+//FUNCION DEL SCROLL DEL MOUSE
 function zoom(e){
-	console.log(e);
-	console.log("layerX: "+e.layerX + " layerY"+e.layerY);
+	scaleMultiplier = 0.8;
 	if(e.wheelDelta<0){
 		scala /= scaleMultiplier;
         draw(scala, translatePos);
@@ -303,22 +338,21 @@ function zoom(e){
 	}
 
 }
+//FUNCION PARA HACER EL ESCALAMIENTO DEL CANVAS
 function draw(scale, translatePos){
 	if(sePuedeGraficar()){
 		canvas = document.getElementById("canvas");
 		canvas.width = ancho;
 		canvas.height = alto;
-		//canvas.style.border="1px solid gray";
 		canvas.style.background="white";
 		ctx = canvas.getContext("2d");
 		ctx.save();
 		ctx.translate(0, 0);
 		ctx.scale(scale, scale);
-	    //dibujarPlano();
         dibujar(cadena);
       }
  }
-
+//FUNCION PARA EVENTOS DEL MOUSE
 function funcionesMouse(){
 
     var startDragOffset = {};
@@ -354,6 +388,7 @@ function funcionesMouse(){
 
     //draw(scala, translatePos);
 }
+//CARGA TODOS LOS ELEMENTOS Y LES ASIGNA SUS FUNCIONES
 function cargarDoc(){
 	botones = document.getElementsByTagName("button");
 	for(i = 0 ; i < botones.length ; i++){
@@ -365,19 +400,19 @@ function cargarDoc(){
 	document.getElementById("CE").addEventListener("click",limpiarTodo);
 	document.getElementById("DEL").addEventListener("click",del);
 	document.getElementById("±").addEventListener("click",cambiarSigno);
+
 	anchoSection = ancho+50;
 	document.getElementById("section").style.width=anchoSection+"px";
+
 	entrada = document.getElementById("in");
 	resultado = document.getElementById("res");
 	sectionO = document.getElementById("section");
 	reporteO = document.getElementById("reporte");
 	reporteO.style.left=sectionO.offsetLeft-200+"px";
 
-
 	canvas = document.getElementById("canvas");
 	canvas.width = ancho;
 	canvas.height = alto;
-	//canvas.style.border="1px solid gray";
 	canvas.style.background="white";
 	ctx = canvas.getContext("2d");
 	ctx.save();
@@ -387,30 +422,15 @@ function cargarDoc(){
     };
     
     dibujarPlano();
-    //dibujar("tan(x)");
     funcionesMouse();
-	//dibujar("2¢+3¢+100");
-	//dibujar("2x+10");
-	//dibujar("2¢");
-
-	//fun = "sen(x)+2x+sen(x)";
-	//fun = fun.replace('sen(',"");
-
-
-	//dibujar("sen(x)+2x+sen(x)");
-	//dibujar("tan(x)");
-	//dibujar("sen(x)");
-	//graficar();
-
-
 }
 window.addEventListener("load",cargarDoc);
 
-
+//MENSAJE DE ERROR GLOBAL
 window.onerror = function (msg, url, line, col, error) {
    var extra = !col ? '' : '\nColumna: ' + col;
    extra += !error ? '' : '\nError: ' + error;
    alert("Error: " + msg + "\nUrl: " + url + "\nlinea: " + line + extra);
-   var suppressErrorAlert = true;
-   return suppressErrorAlert;
+   var errorAlerta = true;
+   return errorAlerta;
 }
